@@ -1,0 +1,23 @@
+commit 48b959a6e7507230da3b4d179b12e1cf5ca88deb
+Author: rlee287 <rlee287@yahoo.com>
+Date:   Mon Mar 13 06:32:00 2017 -0700
+
+    Patch to SD library for version 1.0.8
+    
+    The SDClass::begin method now closes root if necessary before reopening it.
+
+diff --git a/src/SD.cpp b/src/SD.cpp
+index 2afb9d9..d436fae 100644
+--- a/src/SD.cpp
++++ b/src/SD.cpp
+@@ -342,6 +342,10 @@ boolean SDClass::begin(uint8_t csPin) {
+     Return true if initialization succeeds, false otherwise.
+ 
+    */
++	if (root.isOpen()) {
++		root.close();
++	}
++	
+   return card.init(SPI_HALF_SPEED, csPin) &&
+          volume.init(card) &&
+          root.openRoot(volume);
